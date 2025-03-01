@@ -8,12 +8,7 @@ on:
 jobs:
   run-api:
     name: Run API and Indexer
-    runs-on: [self-hosted]
-    permissions:
-      packages: write
-      contents: read
-      attestations: write
-      id-token: write
+    runs-on: [Default]
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
