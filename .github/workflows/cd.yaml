@@ -11,7 +11,7 @@ on:
 jobs:
   run-api:
     name: Run API and Indexer
-    runs-on: [vultr]
+    runs-on: [self-hosted]
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
