@@ -1,0 +1,55 @@
+[package]
+name = "service"
+version = "0.15.0"
+edition = "2021"
+
+[package.metadata.workspaces]
+independent = true
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+error-stack = { workspace = true }
+buildstructor = { workspace = true }
+ethers = { workspace = true }
+lib = { path = "../lib" }
+entity = { path = "../entity" }
+contract = { path = "../contract" }
+chrono = { workspace = true }
+serde_yaml = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+colorful = { workspace = true }
+redis = { workspace = true }
+tokio-stream = { workspace = true }
+tokio = { workspace = true }
+futures = { workspace = true }
+aws-config = { workspace = true }
+aws-sdk-s3 = { workspace = true }
+aws-credential-types = { workspace = true }
+serenity = { workspace = true }
+reqwest = { workspace = true }
+uuid = { workspace = true }
+slug = { workspace = true }
+rand = { workspace = true }
+twitter-v2 = { workspace = true }
+async-graphql = { workspace = true }
+tungstenite = { workspace = true }
+url = { workspace = true }
+serde_with = { workspace = true }
+hex = { workspace = true }
+redis-macros = { workspace = true }
+async-trait = { workspace = true }
+futures-util = { workspace = true }
+async-tungstenite = { workspace = true }
+reqwest-retry = { workspace = true }
+reqwest-middleware = { workspace = true }
+opentelemetry = { workspace = true }
+opentelemetry-otlp = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+tracing-opentelemetry = { workspace = true }
+opentelemetry_sdk = { workspace = true }
+opentelemetry-stdout = { workspace = true }
+rust_decimal = { workspace = true }
+sqlx = { workspace = true }
+opentelemetry-appender-tracing = { workspace = true }

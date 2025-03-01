@@ -1,0 +1,90 @@
+[package]
+name = "server"
+version = "0.2.0"
+edition = "2021"
+
+[workspace]
+members = [
+    ".",
+    "graphql",
+    "indexer",
+    "lib",
+    "entity",
+    "service",
+    "contract"]
+resolver = "2"
+
+[dependencies]
+lib = { path = "lib" }
+entity = { path = "entity" }
+service = { path = "service" }
+contract = { path = "contract" }
+graphql = { path = "graphql" }
+indexer = { path = "indexer" }
+clap = { workspace = true }
+error-stack = { workspace = true }
+serenity = { workspace = true }
+tracing = { workspace = true }
+tokio = { workspace = true }
+ethers = { workspace = true }
+sqlx = { workspace = true }
+tracing-opentelemetry.workspace = true
+opentelemetry_sdk.workspace = true
+
+[workspace.dependencies]
+indexer = { path = "indexer" }
+graphql = { path = "graphql" }
+service = { path = "service" }
+clap = { version = "4.5.4", features = ["derive"] }
+tokio = { version = "1.43.0", features = ["full", "rt"] }
+tracing = { version = "0.1.41", features = ["std"] }
+sqlx = { version = "0.8.3", features = ["postgres", "macros", "json", "uuid", "rust_decimal", "bigdecimal", "chrono", "runtime-tokio", "tls-native-tls", "migrate"] }
+error-stack = "0.5.0"
+buildstructor = "0.5.1"
+ethers = { version = "2.0.14", features = ["abigen", "rustls"] }
+serde_json = "1.0.0"
+colorful = "0.3.2"
+redis = { version = "0.23.0", features = ["aio", "connection-manager", "tokio-comp"] }
+tokio-stream = { version = "0.1.11", features = ["sync"] }
+futures = "0.3.25"
+aws-config = "0.55.3"
+aws-sdk-s3 = "0.28.0"
+aws-credential-types = "0.55.3"
+serenity = { version = "0.11.5", features = ["framework", "standard_framework", "collector", "tokio"] }
+reqwest = { version = "0.11.11", features = ["blocking", "json"] }
+uuid = { version = "1.3.3", features = ["v4"] }
+slug = "0.1.4"
+rand = { version = "0.8.5", features = ["small_rng"] }
+twitter-v2 = "0.1.8"
+async-graphql = { version = "7.0.13", features = ["uuid", "dataloader", "chrono", "rust_decimal", "decimal", "tracing", "opentelemetry"] }
+tungstenite = { version = "0.20.0", features = ["native-tls"] }
+url = "2.4.0"
+serde_with = { version = "3.1.0", features = ["chrono_0_4"] }
+hex = "0.4.3"
+redis-macros = "0.2.1"
+async-trait = "0.1.74"
+futures-util = "0.3.28"
+async-tungstenite = { version = "0.23.0", features = ["async-native-tls", "async-std"] }
+reqwest-retry = "0.3.0"
+reqwest-middleware = "0.2.4"
+opentelemetry = { version = "0.27.0", features = ["logs", "metrics", "tracing", "trace"] }
+opentelemetry-otlp = { version = "0.27.0", features = ["tonic", "trace", "tracing", "tokio", "grpc-tonic", "metrics", "logs", "http-proto", "reqwest-client"] }
+tracing-subscriber = { version = "0.3.18", features = ["env-filter", "registry", "std", "fmt"] }
+opentelemetry_sdk = { version = "0.27.0", features = ["tokio", "rt-tokio", "rt-tokio-current-thread", "metrics", "logs", "testing", "trace", "tracing"] }
+tracing-opentelemetry = { version = "0.28.0", features = ["tracing-log"] }
+opentelemetry-appender-tracing = { version = "0.27.0", features = ["log", "experimental_metadata_attributes", "spec_unstable_logs_enabled"] }
+opentelemetry-stdout = { version = "0.27.0", features = ["logs", "metrics", "trace"] }
+pin-project = "1.1.5"
+rust_decimal = { version = "1.36.0", features = ["serde", "db-postgres"] }
+thiserror = "2.0.1"
+bigdecimal = { version = "0.4.2", features = ["serde"] }
+serde = { version = "1.0.0", features = ["derive"] }
+jsonwebtoken = { version = "8.3.0", features = ["use_pem"] }
+chrono = "0.4.24"
+axum = { version = "0.8.1", features = ["ws"] }
+async-graphql-axum = { version = "7.0.13" }
+tower-http = { version = "0.6.1", features = ["cors", "trace"] }
+once_cell = "1.19.0"
+serde_yaml = "0.9.30"
+regex = "1.11.1"
+axum-server = { version = "0.7", features = ["tls-rustls"] }

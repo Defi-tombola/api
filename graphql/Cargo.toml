@@ -1,0 +1,42 @@
+[package]
+name = "graphql"
+version = "0.15.0"
+edition = "2021"
+
+[package.metadata.workspaces]
+independent = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+lib = { path = "../lib" }
+service = { path = "../service" }
+entity = { path = "../entity" }
+contract = { path = "../contract" }
+async-graphql = { workspace = true, features = ["uuid", "dataloader", "chrono", "log", "decimal", "rust_decimal"] }
+futures = { workspace = true }
+error-stack = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+buildstructor = { workspace = true }
+colorful = { workspace = true }
+jsonwebtoken = { workspace = true }
+chrono = { workspace = true }
+ethers = { workspace = true }
+uuid = { workspace = true }
+bigdecimal = { workspace = true }
+redis = { workspace = true }
+axum = { workspace = true }
+async-graphql-axum = { workspace = true }
+tokio = { workspace = true }
+tower-http = { workspace = true, features = ["compression-full"] }
+once_cell = { workspace = true }
+serde_yaml = { workspace = true }
+rand = { workspace = true }
+tracing = { workspace = true }
+sqlx = { workspace = true }
+slug = { workspace = true }
+regex = { workspace = true }
+rust_decimal = { workspace = true }
+axum-server = {workspace = true}
+axum-prometheus = "0.7.0"

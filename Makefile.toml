@@ -1,0 +1,14 @@
+[config]
+default_to_workspace = false
+
+[tasks.contracts]
+description = "Build dependant smart contracts"
+script = [
+    "cd contract && ./build.sh"
+]
+
+[tasks.nuke]
+description = "Nuke Database"
+script = [
+    "docker exec -it valio-postgres bash -c \"dropdb -U postgres --if-exists -f valio; createdb -U postgres valio\""
+]

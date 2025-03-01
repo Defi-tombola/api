@@ -1,0 +1,25 @@
+.vscode
+.idea
+.ideavimrc
+.DS_Store
+target
+
+# JWT Keys
+private.pem
+private.pk8
+public.pem
+public.pk8
+
+# Configuration
+config.yaml
+config.*.yaml
+
+# Grafana
+docker/grafana/tempo-data
+docker/certbot
+
+# Contracts
+contract/raw
+
+# ENV
+.env.local
