@@ -1,0 +1,33 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-api:
+    name: Run API and Indexer
+    runs-on: [self-hosted]
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+        
+      - name: Copy config file
+        run: |
+          cp /tombola/config.yaml ./config.yaml
+          
+      - name: Build and Run Graphql
+        run: |
+          docker build -t tombola-graphql:latest -f docker/graphql/Dockerfile .
+          docker run -d -e CONFIG_PATH="./config.yaml" -p 8080:8080 tombola-graphql:latest
+ 
+      - name: Build and Run Graphql
+        run: |
+          docker build -t tombola-indexer:latest -f docker/indexer/Dockerfile .
+          docker run -d -e CONFIG_PATH="./config.yaml" -p 8080:8080 tombola-indexer:latest
