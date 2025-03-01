@@ -45,5 +45,6 @@ RUN ldconfig
 COPY ./scripts ./scripts
 COPY ./migrations ./migrations
 COPY ./config.yaml ./config.yaml
+COPY ./config.prod.yaml ./config.prod.yaml
 
 ENTRYPOINT ["/app/scripts/entry.sh", "indexer"]

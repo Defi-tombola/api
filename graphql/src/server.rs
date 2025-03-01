@@ -5,10 +5,12 @@ use axum::response::{Html, IntoResponse};
 use axum::{routing::get, serve, Router};
 use axum_prometheus::metrics_exporter_prometheus::PrometheusBuilder;
 use axum_prometheus::PrometheusMetricLayer;
+use axum_server::tls_rustls::RustlsConfig;
 use error_stack::{Result, ResultExt};
 use lib::error::Error;
 use service::{config::service::ConfigService, services::ServiceProvider};
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
+use std::path::Path;
 use tower_http::compression::CompressionLayer;
 use tower_http::cors;
 use tower_http::trace::TraceLayer;
@@ -87,27 +89,26 @@ impl Server {
         let app = self.router(app_state);
 
         let address = config.graphql.listen.clone();
-        let listener = tokio::net::TcpListener::bind(address)
-            .await
+        let listener = std::net::TcpListener::bind(address)
             .change_context(Error::Unknown)?;
 
-        // let certs_folder = Path::new("./self_signed_certs");
-        // let rustls_config = RustlsConfig::from_pem_file(
-        //     certs_folder
-        //         .join("cert.pem"),
-        //     certs_folder
-        //         .join("key.pem"),
-        // )
-        // .await
-        // .unwrap();
+        let certs_folder = Path::new("./self_signed_certs");
+        let rustls_config = RustlsConfig::from_pem_file(
+            certs_folder
+                .join("cert.pem"),
+            certs_folder
+                .join("key.pem"),
+        )
+        .await
+        .unwrap();
 
-        serve(listener, app.into_make_service())
-            .await
-            .change_context(Error::Unknown)?;
-        // axum_server::from_tcp_rustls(listener, rustls_config)
-        //     .serve(app.into_make_service())
+        // serve(listener, app.into_make_service())
         //     .await
         //     .change_context(Error::Unknown)?;
+        axum_server::from_tcp_rustls(listener, rustls_config)
+            .serve(app.into_make_service())
+            .await
+            .change_context(Error::Unknown)?;
         Ok(())
     }
 }

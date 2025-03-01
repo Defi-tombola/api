@@ -1,5 +1,8 @@
 name: CD
 
+env:
+  REGISTRY_URL: fra.vultrcr.com/tombola
+
 on:
   push:
     branches:
@@ -8,21 +11,26 @@ on:
 jobs:
   run-api:
     name: Run API and Indexer
-    runs-on: [Default]
+    runs-on: [vultr]
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
         
-      - name: Copy config file
+      - name: Docker login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Pull images
         run: |
-          cp /tombola/config.yaml ./config.yaml
+          docker pull $REGISTRY_URL/graphql:latest
+          docker pull $REGISTRY_URL/indexer:latest
+      
+      - name: Run Graphql API
+        run: |
+          docker run -d -e CONFIG_PATH="/app/config.prod.yaml" -p 8001:8001 $REGISTRY_URL/graphql:latest
           
-      - name: Build and Run Graphql
+      - name: Run Indexer
         run: |
-          docker build -t tombola-graphql:latest -f docker/graphql/Dockerfile .
-          docker run -d -e CONFIG_PATH="./config.yaml" -p 8080:8080 tombola-graphql:latest
- 
-      - name: Build and Run Graphql
-        run: |
-          docker build -t tombola-indexer:latest -f docker/indexer/Dockerfile .
-          docker run -d -e CONFIG_PATH="./config.yaml" -p 8080:8080 tombola-indexer:latest
+          docker run -d -e CONFIG_PATH="/app/config.prod.yaml" $REGISTRY_URL/indexer:latest
