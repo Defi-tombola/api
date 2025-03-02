@@ -16,7 +16,7 @@ use pin_project::pin_project;
 use serenity::async_trait;
 use std::pin::Pin;
 use tokio::sync::mpsc;
-use tracing::{error, info, warn, Instrument};
+use tracing::{debug, error, info, warn, Instrument};
 
 use crate::events::*;
 use service::common::{
@@ -363,8 +363,7 @@ where
                         break;
                     }
                     None => {
-                        warn!("Chain subscription has ended, stopping chain consumer");
-                        break;
+                        debug!("Chain subscription has ended, stopping chain consumer");
                     }
                 }
             }

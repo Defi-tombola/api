@@ -68,7 +68,7 @@ impl Subscription for ChainSubscription {
             .unwrap_or_default();
         
         let client = self.client.clone();
-        let poll_interval = Duration::from_secs(5);
+        let poll_interval = Duration::from_secs(1);
         
         let start_block = {
             match filter.get_from_block() {
@@ -82,7 +82,7 @@ impl Subscription for ChainSubscription {
         let stream_logs = stream::unfold((client, filter, start_block), move |(client, filter, mut from_block)| async move {
             // Sleep for the poll interval
             info!("Sleeping for {:?}", poll_interval);
-            interval(poll_interval).tick().await;
+            tokio::time::sleep(poll_interval).await;
             info!("Polling for logs");
             
             let latest_block = client
