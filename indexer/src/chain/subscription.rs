@@ -76,11 +76,14 @@ impl Subscription for ChainSubscription {
                 None => BlockNumber::Latest,
             }
         };
+        info!("Starting logs stream from block {:?}", start_block);
         
         // Create a stream that polls for logs at regular intervals
         let stream_logs = stream::unfold((client, filter, start_block), move |(client, filter, mut from_block)| async move {
             // Sleep for the poll interval
+            info!("Sleeping for {:?}", poll_interval);
             interval(poll_interval).tick().await;
+            info!("Polling for logs");
             
             let latest_block = client
                 .get_block_number()
@@ -109,6 +112,7 @@ impl Subscription for ChainSubscription {
             
             updated_filter = updated_filter.to_block(to_block);
             
+            info!("Fetching logs using the updated filter");
             // Fetch logs using the updated filter
             let logs = client
                 .get_logs(&updated_filter)
@@ -119,9 +123,12 @@ impl Subscription for ChainSubscription {
             // Update the last block number
             from_block = to_block;
             
+            info!("Emitting logs as a stream");
             // Emit the logs as a stream
             Some((stream::iter(logs.into_iter().map(Ok)), (client, filter, from_block)))
         }).flatten();
+        
+        info!("Logs stream created");
         
         Box::pin(stream_logs)
     }
