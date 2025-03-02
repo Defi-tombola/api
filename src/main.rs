@@ -18,28 +18,25 @@ async fn main() {
         ConfigService::read_file(Path::new(&args.config)).expect("Failed to read config file");
 
     let service_name = args.command.to_string();
-    telemetry::init(
-        &config,
-        service_name,
-        args.log_level.into(),
-    )
-    .expect("Failed to initialize telemetry");
+    // telemetry::init(
+    //     &config,
+    //     service_name,
+    //     args.log_level.into(),
+    // )
+    // .expect("Failed to initialize telemetry");
 
     // Run pending migrations
     run_migrations(&config).await;
 
-    let meter = telemetry::get_meter_provider().meter("server_start_up_times");
+    // let meter = telemetry::get_meter_provider().meter("server_start_up_times");
 
-    let counter = meter.u64_counter("start_up_time").build();
     match args.command {
         cli::Commands::Indexer { chains, with_tasks } => {
-            counter.clone().add(1, &[]);
             if let Err(e) = indexer::start(config, chains, with_tasks).await {
                 error!(reason = ?e, "Failed to start indexer");
             }
         }
         cli::Commands::GraphQL => {
-            counter.clone().add(1, &[]);
             if let Err(e) = graphql::start(config).await {
                 error!(reason = ?e, "Failed to start GraphQL");
             }
