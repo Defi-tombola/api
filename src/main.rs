@@ -18,12 +18,12 @@ async fn main() {
         ConfigService::read_file(Path::new(&args.config)).expect("Failed to read config file");
 
     let service_name = args.command.to_string();
-    // telemetry::init(
-    //     &config,
-    //     service_name,
-    //     args.log_level.into(),
-    // )
-    // .expect("Failed to initialize telemetry");
+    telemetry::init(
+        &config,
+        service_name,
+        args.log_level.into(),
+    )
+    .expect("Failed to initialize telemetry");
 
     // Run pending migrations
     run_migrations(&config).await;
