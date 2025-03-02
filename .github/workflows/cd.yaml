@@ -35,7 +35,7 @@ jobs:
         
       - name: Run Graphql API
         run: |
-          docker run -d -e CONFIG_PATH="/app/config.prod.yaml" --name graphql -p 8001:8001 $REGISTRY_URL/graphql:latest
+          docker run -d -e CONFIG_PATH="/app/config.prod.yaml" --name graphql -p 80:8001 $REGISTRY_URL/graphql:latest
           
       - name: Run Indexer
         run: |

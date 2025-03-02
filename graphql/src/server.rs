@@ -89,28 +89,37 @@ impl Server {
         let app = self.router(app_state);
 
         let address = config.graphql.listen.clone();
-        let listener = tokio::net::TcpListener::bind(address)
+        
+        if config.environment.name == "prod" {
+            let listener = std::net::TcpListener::bind(address)
+                .change_context(Error::Unknown)?;
+            
+            let certs_folder = Path::new("./self_signed_certs");
+            let rustls_config = RustlsConfig::from_pem_file(
+                certs_folder
+                    .join("cert.pem"),
+                certs_folder
+                    .join("key.pem"),
+            )
             .await
-            .change_context(Error::Unknown)?;
+            .unwrap();
 
-        // let certs_folder = Path::new("./self_signed_certs");
-        // let rustls_config = RustlsConfig::from_pem_file(
-        //     certs_folder
-        //         .join("cert.pem"),
-        //     certs_folder
-        //         .join("key.pem"),
-        // )
-        // .await
-        // .unwrap();
-
-        serve(listener, app.into_make_service())
-            .await
-            .change_context(Error::Unknown)?;
-        // axum_server::from_tcp_rustls(listener, rustls_config)
-            // .serve(app.into_make_service())
-            // .await
-            // .change_context(Error::Unknown)?;
+            axum_server::from_tcp_rustls(listener, rustls_config)
+                .serve(app.into_make_service())
+                .await
+                .change_context(Error::Unknown)?;
+        } else {
+            let listener = tokio::net::TcpListener::bind(address)
+                        .await
+                        .change_context(Error::Unknown)?;
+            
+            serve(listener, app.into_make_service())
+                        .await
+                        .change_context(Error::Unknown)?;
+        }
+        
         Ok(())
+        
     }
 }
 
