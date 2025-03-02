@@ -20,6 +20,16 @@ jobs:
         run: |
           docker login $REGISTRY_URL -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
       
+      - name: Stop running graphql
+        run: |
+          docker stop indexer
+        continue-on-error: true
+      
+      - name: Stop running indexer
+        run: |
+          docker stop indexer
+        continue-on-error: true
+        
       - name: Pull images
         run: |
           docker pull $REGISTRY_URL/graphql:latest
