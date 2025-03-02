@@ -97,9 +97,9 @@ impl Server {
             let certs_folder = Path::new("./self_signed_certs");
             let rustls_config = RustlsConfig::from_pem_file(
                 certs_folder
-                    .join("cert.pem"),
+                    .join("fullchain.pem"),
                 certs_folder
-                    .join("key.pem"),
+                    .join("privkey.pem"),
             )
             .await
             .unwrap();
