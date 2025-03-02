@@ -19,22 +19,20 @@ jobs:
       - name: Docker login
         run: |
           docker login $REGISTRY_URL -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
-      
-      - name: Stop running graphql
-        run: |
-          docker stop indexer
-        continue-on-error: true
-      
-      - name: Stop running indexer
-        run: |
-          docker stop indexer
-        continue-on-error: true
-        
+          
       - name: Pull images
         run: |
           docker pull $REGISTRY_URL/graphql:latest
           docker pull $REGISTRY_URL/indexer:latest
       
+      - name: Stop and remove current container
+        run: docker rm -f graphql || true
+        shell: bash
+        
+      - name: Stop and remove current container
+        run: docker rm -f indexer || true
+        shell: bash
+        
       - name: Run Graphql API
         run: |
           docker run -d -e CONFIG_PATH="/app/config.prod.yaml" --name graphql -p 8001:8001 $REGISTRY_URL/graphql:latest
